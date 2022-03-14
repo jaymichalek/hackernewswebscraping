@@ -10,7 +10,15 @@ links = soup.select('.titlelink')
 subtext = soup.select('.subtext')
 
 
-def create_custom_hn(links, subtext):
+# Function sorts the hashmap from create_custom_hn fn to a list in reverse order
+# by number of votes.
+def sort_stories_by_votes(hnlist):
+    return sorted(hnlist, key=lambda k: k['votes'], reverse=True)
+
+
+# This function grabs the title, link and number of votes from hackernews web articles site with votes
+# that are greater than 99 votes only.
+def create_custom_hn(link, text):
     hn = []
     for idx, item in enumerate(links):
         title = item.getText()
@@ -20,7 +28,8 @@ def create_custom_hn(links, subtext):
             points = int(vote[0].getText().replace(' points', ''))
             if points > 99:
                 hn.append({'title': title, 'link': href, 'votes': points})
-    return hn
+    return sort_stories_by_votes(hn)
 
 
+# Used pprint to print output neatly on console.
 pprint.pprint(create_custom_hn(links, subtext))
